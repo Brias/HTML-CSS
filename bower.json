@@ -17,7 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "Gridiculous": "cbavota/Gridiculous",
     "jquery": "^2.2.2",
     "Materialize": "materialize#^0.97.6"
   }

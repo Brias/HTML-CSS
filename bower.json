@@ -1,0 +1,24 @@
+{
+  "name": "projekt",
+  "authors": [
+    "Matthias Bräuer <matthias.braeuer@arcor.de>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Gridiculous": "cbavota/Gridiculous",
+    "jquery": "^2.2.2",
+    "Materialize": "materialize#^0.97.6"
+  }
+}

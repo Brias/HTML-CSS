@@ -1,0 +1,15 @@
+a {
+    padding: 10px;
+    color: black;
+    border: solid 2px black;
+    border-radius: 5px;
+}
+
+.parallax img {
+    display: block;
+    transform: translate3d(-50%, 508px, 0px);
+}
+
+.section {
+    min-height: 500px;
+}

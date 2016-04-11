@@ -7,9 +7,58 @@
     <meta name="author" content="Matthias Bräuer">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <link rel="stylesheet" href="js/libs/Materialize/dist/css/materialize.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../js/libs/Materialize/dist/css/materialize.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+    <nav id="navbar"></nav>
+    <header class="row container">
+        <h1 class="col s12">Schaltungen</h1>
+    </header>
+    <main class="container">
+        <div class="row">
+            <h2 class="col 12">Komplette Schaltung</h2>
+        </div>
+        <div class="row">
+            <figure class="col s5">
+                <img class="materialboxed responsive-img" src="../images/circuits/circuit_complete.png"  alt="Komplette Schaltung" data-caption="Abbildung 1">
+                <figcaption>Abbildung 1</figcaption>
+            </figure>
+            <section class="col s5">
+                <h3>Raspberry Pi + Arduino</h3>
+                <p>
+                    Abbildung 1 zeigt die Komplette Schaltung aller benutzten Komponenten.
+                </p>
+                <h4>Raspberry Pi</h4>
+                <p>
+                    Die obere Schaltung zeigt einen Raspberry Pi B, an den ein 16x2 LCD-Display angeschlossen ist.
+                </p>
+                <h4>Arduino</h4>
+                <p>
+                    Die untere Schaltung zeigt eine Arduino samt Abstandssensoren, 8x8 LED-Matric, LED Strip und 2 Kupferbahnenpaaren.
+                </p>
+            </section>
+        </div>
+        <div class="row">
+            <h2>Teilschaltung: Raspberry Pi</h2>
+            <figure>
+                <img class="materialboxed responsive-img" src="../images/circuits/raspberry_pi_circuit.PNG" alt="Schaltung Raspberry Pi" data-caption="Abbildung 2">
+                <figcaption class="materialbox-caption">Abbildung 2</figcaption>
+            </figure>
+        </div>
+        <div class="row">
+            <h2>Teilschaltung: Arduino</h2>
+            <figure>
+                <img class="materialboxed responsive-img" src="../images/circuits/arduino_circuit.PNG" alt="Schaltung Arduino" data-caption="Abbildung 3">
+                <figcaption class="materialbox-caption">Abbildung 3</figcaption>
+            </figure>
+        </div>
+    </main>
+    <footer></footer>
+
+    <script type="text/javascript" src="../js/libs/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../js/libs/Materialize/dist/js/materialize.js"></script>
+    <script type="text/javascript" src="../js/app/addNavbar.js"></script>
+    <script type="text/javascript" src="../js/app/addFooter.js"></script>
 </body>
 </html>

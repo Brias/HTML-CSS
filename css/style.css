@@ -19,6 +19,25 @@ a.custom-link {
     transform: translate3d(-50%, 508px, 0px);
 }
 
+.parallax-title-container {
+    position: relative;
+}
+
+.parallax-title {
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    color: white;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+}
+
 .section {
     min-height: 500px;
+}
+
+.materialboxed {
+    background-color: white;
 }

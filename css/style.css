@@ -7,6 +7,10 @@ footer {
     margin-bottom: 0;
 }
 
+#navbar, footer {
+    background-color: #baafff;
+}
+
 a.custom-link {
     padding: 10px;
     color: black;

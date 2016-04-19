@@ -7,8 +7,26 @@ footer {
     margin-bottom: 0;
 }
 
-#navbar, footer {
+footer {
     background-color: #baafff;
+}
+
+#navbar ul {
+    list-style: none;
+    display: inline-block;
+}
+
+#navbar a:hover, .active a{
+    color: lightgray !important;
+}
+
+#navbar a:active{
+    color: black;
+}
+
+.navbar-fixed {
+    position: fixed;
+    top: 0;
 }
 
 a.custom-link {

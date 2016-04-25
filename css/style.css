@@ -11,6 +11,21 @@ footer {
     background-color: #baafff;
 }
 
+em {
+    font-weight: bolder;
+    font-style: normal;
+    font-size: 1.2em;
+}
+
+ul.li-enum-no-nums, ol.li-enum-no-nums {
+    padding: 30px;
+    list-style: square;
+}
+
+ul.li-enum-no-nums li, ol.li-enum-no-nums li{
+    list-style: square;
+}
+
 #navbar ul {
     list-style: none;
     display: inline-block;
@@ -34,6 +49,8 @@ a.custom-link {
     color: black;
     border: solid 2px black;
     border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 .parallax img {

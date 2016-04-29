@@ -1,14 +1,15 @@
 html, body {
     width: 100%;
     height: 100%;
+    font-size: 1.1em;
 }
 
 footer {
     margin-bottom: 0;
 }
 
-footer {
-    background-color: #baafff;
+#navbar, footer {
+    background-color: #785115;
 }
 
 em {
@@ -51,6 +52,21 @@ a.custom-link {
     border-radius: 5px;
     font-size: 1.2em;
     font-weight: bold;
+}
+
+a.custom-link:hover {
+    background-color: lightgray;
+    color: white;
+    cursor: pointer;
+}
+
+a.custom-text-link {
+    color: #9b9b9b;
+}
+
+a.custom-text-link:hover {
+    cursor: pointer;
+    color: black;
 }
 
 .parallax img {

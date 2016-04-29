@@ -8,6 +8,10 @@ footer {
     margin-bottom: 0;
 }
 
+main {
+    margin-bottom: 15px!important;
+}
+
 #navbar, footer {
     background-color: #785115;
 }

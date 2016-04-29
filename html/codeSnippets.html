@@ -215,12 +215,12 @@
                             _files.sort()
 
 
-                            def start_player():
-                                global _current
+                        def start_player():
+                            global _current
 
-                                _current = 0
+                            _current = 0
 
-                                play(_files[_current])
+                            play(_files[_current])
 
 
                         def pause():
@@ -286,17 +286,17 @@
                         def update_lcd():
                             global _timer
 
-                        if pygame.mixer.music.get_busy():
-                            if _timer > 30:
-                                if _timer > 60:
-                                    _timer = 0
-                                    send_time()
+                            if pygame.mixer.music.get_busy():
+                                if _timer > 30:
+                                    if _timer > 60:
+                                        _timer = 0
+                                        send_time()
+                                else:
+                                    send_title()
+                                _timer += 1
                             else:
-                                send_title()
-                            _timer += 1
-                        else:
-                            _timer = 0
-                            send_ready()
+                                _timer = 0
+                                send_ready()
 
 
                         def init_lcd():
@@ -306,10 +306,10 @@
 
                         def check_for_event():
                             events = pygame.event.get()
-                            if events:
-                            for event in events:
-                            if event.type == pygame.USEREVENT and event.code == 0:
-                            next_song()
+                                if events:
+                                    for event in events:
+                                        if event.type == pygame.USEREVENT and event.code == 0:
+                                        next_song()
 
 
                         def init():

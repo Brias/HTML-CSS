@@ -1,0 +1,38 @@
+.container {
+ max-width: 1920px;
+ width: 90%;
+}
+
+.responsive {
+    width: 25%;
+    float: left;
+    padding: 0 5px;
+    margin: 5px 0;
+    background: transparent;
+}
+
+.responsive img {
+    width: 100%;
+    height: auto;
+}
+
+@media screen and (max-width: 1224px) {
+    .responsive {
+        width: 33.3333333%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .responsive {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .responsive {
+        width: 100%;
+        float: none;
+        padding: 0;
+    }
+}
+

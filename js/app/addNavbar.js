@@ -15,9 +15,6 @@ function checkForActive() {
     case 'gallery.html':
       setActive('gallery');
       break;
-    case 'contact.html':
-      setActive('contact');
-      break;
   }
 }
 
@@ -36,7 +33,6 @@ function toggleNavbar() {
 }
 
 function onResize() {
-  console.log("sdd");
   if($(window).width() > 625) {
     $('.responsive-nav-list').css("display", "block");
   } else {

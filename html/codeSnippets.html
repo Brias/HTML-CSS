@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>SWH-WS15/16 - Code</title>
-    <meta viewport="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Matthias Bräuer">
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -31,420 +31,424 @@
         <section class="row">
             <h3 id="codePlayCd" class="col s12">Musik-Player - play_cd.py</h3>
             <pre class="col s12">
-                <code>
-                    import pygame
-                    import os
-                    import serial
-                    import atexit
-                    import sys
-                    import lcd
-                    import datetime
-                    from time import sleep
+                <figure>
+                    <code>
+                        import pygame
+                        import os
+                        import serial
+                        import atexit
+                        import sys
+                        import lcd
+                        import datetime
+                        from time import sleep
 
-                    READY = "READY"
+                        READY = "READY"
 
-                    _s = serial.Serial('/dev/ttyACM0', 115200)
-                    _files = []
-                    _file_names = []
-                    _current = 0
-                    _current_volume = 0
-                    _timer = 0
-                    _current_displayed = ""
-
-
-                    def cleanup():
-                        lcd.clear_display()
-                        pygame.quit()
-                        _s.write("disconnected")
-                        _s.close()
-                        sys.exit()
-
-
-                    def init_cleanup():
-                        atexit.register(cleanup)
-
-
-                    def init_serial():
-                        _s.open()
-
-
-                    def init_display():
-                        pygame.display.init()
-                        pygame.display.set_mode((320, 240))
-
-
-                    def init_mixer():
-                        pygame.mixer.init(48000, -16, 1, 1024)
-
-
-                    def get_song_time():
-                        return pygame.mixer.music.get_pos()
-
-
-                    def get_song_title():
-                        return _file_names[_current]
-
-
-                    def send_ready():
-                        global _current_displayed
-
-                        if _current_displayed != READY:
-                            _current_displayed = READY
-                            lcd.clear_line(lcd.LCD_LINE_1)
-                            lcd.lcd_message("Ich bin bereit!")
-                            lcd.clear_line(lcd.LCD_LINE_2)
-                            lcd.lcd_message("Leg los!")
-
-
-                    def send_time():
-                        global _current_displayed
-
-                        time = get_song_time()
-                        d = datetime.timedelta(milliseconds=time)
-                        time = str(d)[2:-7]
-                        if _current_displayed != time:
-                            _current_displayed = time
-
-                        if time != -1:
-                            lcd.clear_line(lcd.LCD_LINE_1)
-                            lcd.lcd_message(time)
-                            lcd.clear_line(lcd.LCD_LINE_2)
-                            lcd.lcd_message("")
-
-
-                    def send_title():
-                        global _current_displayed
-
-                        if len(_file_names) != 0:
-                            title = get_song_title().split(".mp3")[0]
-
-                        if _current_displayed != title:
-                            _current_displayed = title
-
-                        if len(title) > 16:
-                            title_first = title[:15]
-                            title_second = title[16:len(title)]
-
-                            lcd.clear_line(lcd.LCD_LINE_1)
-                            lcd.lcd_message(title_first)
-                            lcd.clear_line(lcd.LCD_LINE_2)
-                            lcd.lcd_message(title_second)
-                        else:
-                            lcd.clear_line(lcd.LCD_LINE_1)
-                            lcd.lcd_message(title)
-                            lcd.clear_line(lcd.LCD_LINE_2)
-                            lcd.lcd_message("")
-
-
-                    def set_volume():
-                        global _current_volume
-
-                        if _current_volume < 0:
-                            _current_volume = 0
-                        if _current_volume > 1:
-                            _current_volume = 1
-
-                        pygame.mixer.music.set_volume(_current_volume)
-
-                        _s.write(str(_current_volume).encode())
-
-
-                    def volume_up():
-                        global _current_volume
-
-                        _current_volume = pygame.mixer.music.get_volume() + 0.2
-
-                        set_volume()
-
-
-                    def volume_down():
-                        global _current_volume
-
-                        _current_volume = pygame.mixer.music.get_volume() - 0.2
-
-                        set_volume()
-
-
-                    def set_key_events():
-                        pygame.event.set(pygame.constants.KEYDOWN)
-
-
-                    def set_end_event():
-                        pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
-
-
-                    def play(file):
-                        pygame.mixer.music.load(file)
-                        pygame.mixer.music.play()
-                        set_end_event()
-
-
-                    def next_song():
-                        global _current
-
-                        if _current == len(_files) - 1:
-                            _current = 0
-                        else:
-                            _current += 1
-
-                        play(_files[_current])
-
-
-                    def previous_song():
-                        global _current
-
-                        if _current == 0:
-                            _current = len(_files) - 1
-                        else:
-                            _current -= 1
-
-                        play(_files[_current])
-
-
-                    def load_playlist(playlist):
-                        global _files, _file_names
-
+                        _s = serial.Serial('/dev/ttyACM0', 115200)
                         _files = []
                         _file_names = []
-
-                        for file in os.listdir("/home/pi/music/" + playlist):
-                            _files.append("/home/pi/music/" + playlist + "/" + file)
-                            _file_names.append(file)
-
-                        _file_names.sort()
-                        _files.sort()
-
-
-                    def start_player():
-                        global _current
-
                         _current = 0
-
-                        play(_files[_current])
-
-
-                    def pause():
-                        pygame.mixer.music.pause()
+                        _current_volume = 0
+                        _timer = 0
+                        _current_displayed = ""
 
 
-                    def unpause():
-                        pygame.mixer.music.unpause()
+                        def cleanup():
+                            lcd.clear_display()
+                            pygame.quit()
+                            _s.write("disconnected")
+                            _s.close()
+                            sys.exit()
 
 
-                    def stop():
-                        pygame.mixer.music.stop()
+                        def init_cleanup():
+                            atexit.register(cleanup)
 
 
-                    def quit_pygame():
-                        pygame.mixer.quit()
+                        def init_serial():
+                            _s.open()
 
 
-                    def check_for_serial_input():
-                        response = str(_s.readline())
-
-                        mode = response[:1]
-                        value = response[1:]
-
-                        if mode == "-":
-                        return
-
-                        try:
-                            value = int(value)
-                        except:
-                            return
-
-                        if mode == "s":
-                            stop()
-                            return
-
-                        if mode == "t" or mode == "b":
-                            playlist = mode + "/" + str(value)
-
-                            load_playlist(playlist)
-                            start_player()
-
-                            return
-
-                        if len(_files) < 1:
-                            return
-
-                        if mode == "g":
-                            if value == 0:
-                                unpause()
-                            if value == 1:
-                                pause()
-                            if value == 2:
-                                next_song()
-                            if value == 3:
-                                previous_song()
-                            if value == 4:
-                                volume_up()
-                            if value == 5:
-                                volume_down()
+                        def init_display():
+                            pygame.display.init()
+                            pygame.display.set_mode((320, 240))
 
 
-                    def update_lcd():
-                        global _timer
+                        def init_mixer():
+                            pygame.mixer.init(48000, -16, 1, 1024)
 
-                        if pygame.mixer.music.get_busy():
-                            if _timer > 30:
-                                if _timer > 60:
-                                    _timer = 0
-                                    send_time()
+
+                        def get_song_time():
+                            return pygame.mixer.music.get_pos()
+
+
+                        def get_song_title():
+                            return _file_names[_current]
+
+
+                        def send_ready():
+                            global _current_displayed
+
+                            if _current_displayed != READY:
+                                _current_displayed = READY
+                                lcd.clear_line(lcd.LCD_LINE_1)
+                                lcd.lcd_message("Ich bin bereit!")
+                                lcd.clear_line(lcd.LCD_LINE_2)
+                                lcd.lcd_message("Leg los!")
+
+
+                        def send_time():
+                            global _current_displayed
+
+                            time = get_song_time()
+                            d = datetime.timedelta(milliseconds=time)
+                            time = str(d)[2:-7]
+                            if _current_displayed != time:
+                                _current_displayed = time
+
+                            if time != -1:
+                                lcd.clear_line(lcd.LCD_LINE_1)
+                                lcd.lcd_message(time)
+                                lcd.clear_line(lcd.LCD_LINE_2)
+                                lcd.lcd_message("")
+
+
+                        def send_title():
+                            global _current_displayed
+
+                            if len(_file_names) != 0:
+                                title = get_song_title().split(".mp3")[0]
+
+                            if _current_displayed != title:
+                                _current_displayed = title
+
+                            if len(title) > 16:
+                                title_first = title[:15]
+                                title_second = title[16:len(title)]
+
+                                lcd.clear_line(lcd.LCD_LINE_1)
+                                lcd.lcd_message(title_first)
+                                lcd.clear_line(lcd.LCD_LINE_2)
+                                lcd.lcd_message(title_second)
                             else:
-                                send_title()
-                            _timer += 1
-                        else:
-                            _timer = 0
-                            send_ready()
+                                lcd.clear_line(lcd.LCD_LINE_1)
+                                lcd.lcd_message(title)
+                                lcd.clear_line(lcd.LCD_LINE_2)
+                                lcd.lcd_message("")
 
 
-                    def init_lcd():
-                        lcd.pins_init()
-                        lcd.display_init()
+                        def set_volume():
+                            global _current_volume
+
+                            if _current_volume < 0:
+                                _current_volume = 0
+                            if _current_volume > 1:
+                                _current_volume = 1
+
+                            pygame.mixer.music.set_volume(_current_volume)
+
+                            _s.write(str(_current_volume).encode())
 
 
-                    def check_for_event():
-                        events = pygame.event.get()
-                            if events:
-                                for event in events:
-                                    if event.type == pygame.USEREVENT and event.code == 0:
+                        def volume_up():
+                            global _current_volume
+
+                            _current_volume = pygame.mixer.music.get_volume() + 0.2
+
+                            set_volume()
+
+
+                        def volume_down():
+                            global _current_volume
+
+                            _current_volume = pygame.mixer.music.get_volume() - 0.2
+
+                            set_volume()
+
+
+                        def set_key_events():
+                            pygame.event.set(pygame.constants.KEYDOWN)
+
+
+                        def set_end_event():
+                            pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+
+
+                        def play(file):
+                            pygame.mixer.music.load(file)
+                            pygame.mixer.music.play()
+                            set_end_event()
+
+
+                        def next_song():
+                            global _current
+
+                            if _current == len(_files) - 1:
+                                _current = 0
+                            else:
+                                _current += 1
+
+                            play(_files[_current])
+
+
+                        def previous_song():
+                            global _current
+
+                            if _current == 0:
+                                _current = len(_files) - 1
+                            else:
+                                _current -= 1
+
+                            play(_files[_current])
+
+
+                        def load_playlist(playlist):
+                            global _files, _file_names
+
+                            _files = []
+                            _file_names = []
+
+                            for file in os.listdir("/home/pi/music/" + playlist):
+                                _files.append("/home/pi/music/" + playlist + "/" + file)
+                                _file_names.append(file)
+
+                            _file_names.sort()
+                            _files.sort()
+
+
+                        def start_player():
+                            global _current
+
+                            _current = 0
+
+                            play(_files[_current])
+
+
+                        def pause():
+                            pygame.mixer.music.pause()
+
+
+                        def unpause():
+                            pygame.mixer.music.unpause()
+
+
+                        def stop():
+                            pygame.mixer.music.stop()
+
+
+                        def quit_pygame():
+                            pygame.mixer.quit()
+
+
+                        def check_for_serial_input():
+                            response = str(_s.readline())
+
+                            mode = response[:1]
+                            value = response[1:]
+
+                            if mode == "-":
+                            return
+
+                            try:
+                                value = int(value)
+                            except:
+                                return
+
+                            if mode == "s":
+                                stop()
+                                return
+
+                            if mode == "t" or mode == "b":
+                                playlist = mode + "/" + str(value)
+
+                                load_playlist(playlist)
+                                start_player()
+
+                                return
+
+                            if len(_files) < 1:
+                                return
+
+                            if mode == "g":
+                                if value == 0:
+                                    unpause()
+                                if value == 1:
+                                    pause()
+                                if value == 2:
                                     next_song()
+                                if value == 3:
+                                    previous_song()
+                                if value == 4:
+                                    volume_up()
+                                if value == 5:
+                                    volume_down()
 
 
-                    def init():
-                        global _current_volume
+                        def update_lcd():
+                            global _timer
 
-                        init_lcd()
-                        init_cleanup()
-                        init_serial()
-                        init_display()
-                        init_mixer()
-
-                        _s.write("connected")
-
-                        sleep(3)
-
-                        _current_volume = pygame.mixer.music.get_volume()
-                        set_volume()
-
-
-                    def loop():
-                        while True:
-                            update_lcd()
-                            check_for_serial_input()
-                            check_for_event()
+                            if pygame.mixer.music.get_busy():
+                                if _timer > 30:
+                                    if _timer > 60:
+                                        _timer = 0
+                                        send_time()
+                                else:
+                                    send_title()
+                                _timer += 1
+                            else:
+                                _timer = 0
+                                send_ready()
 
 
-                    init()
-                    loop()
-                </code>
+                        def init_lcd():
+                            lcd.pins_init()
+                            lcd.display_init()
+
+
+                        def check_for_event():
+                            events = pygame.event.get()
+                                if events:
+                                    for event in events:
+                                        if event.type == pygame.USEREVENT and event.code == 0:
+                                        next_song()
+
+
+                        def init():
+                            global _current_volume
+
+                            init_lcd()
+                            init_cleanup()
+                            init_serial()
+                            init_display()
+                            init_mixer()
+
+                            _s.write("connected")
+
+                            sleep(3)
+
+                            _current_volume = pygame.mixer.music.get_volume()
+                            set_volume()
+
+
+                        def loop():
+                            while True:
+                                update_lcd()
+                                check_for_serial_input()
+                                check_for_event()
+
+
+                        init()
+                        loop()
+                    </code>
+                </figure>
             </pre>
         </section>
         <section class="row">
             <h3 id="codeLCD">LCD-Display - lcd.py</h3>
             <pre class="col s12">
-                <code>
-                    #from: http://tutorials-raspberrypi.de/text-auf-16x2-zeichen-lcd-display-anzeigen-hd44780/
-                    #!/usr/bin/python
-                    import time
-                    import RPi.GPIO as GPIO
+                <figure>
+                    <code>
+                        #from: http://tutorials-raspberrypi.de/text-auf-16x2-zeichen-lcd-display-anzeigen-hd44780/
+                        #!/usr/bin/python
+                        import time
+                        import RPi.GPIO as GPIO
 
-                    # Zuordnung der GPIO Pins (ggf. anpassen)
-                    LCD_RS = 4
-                    LCD_E = 17
-                    LCD_DATA4 = 18
-                    LCD_DATA5 = 22
-                    LCD_DATA6 = 23
-                    LCD_DATA7 = 24
+                        # Zuordnung der GPIO Pins (ggf. anpassen)
+                        LCD_RS = 4
+                        LCD_E = 17
+                        LCD_DATA4 = 18
+                        LCD_DATA5 = 22
+                        LCD_DATA6 = 23
+                        LCD_DATA7 = 24
 
-                    LCD_WIDTH = 16 		# Zeichen je Zeile
-                    LCD_LINE_1 = 0x80 	# Adresse der ersten Display Zeile
-                    LCD_LINE_2 = 0xC0 	# Adresse der zweiten Display Zeile
-                    LCD_CHR = GPIO.HIGH
-                    LCD_CMD = GPIO.LOW
-                    E_PULSE = 0.0005
-                    E_DELAY = 0.0005
-
-
-                    def lcd_send_byte(bits, mode):
-                    GPIO.output(LCD_RS, mode)
-                    GPIO.output(LCD_DATA4, GPIO.LOW)
-                    GPIO.output(LCD_DATA5, GPIO.LOW)
-                    GPIO.output(LCD_DATA6, GPIO.LOW)
-                    GPIO.output(LCD_DATA7, GPIO.LOW)
-
-                    if bits & 0x10 == 0x10:
-                        GPIO.output(LCD_DATA4, GPIO.HIGH)
-                    if bits & 0x20 == 0x20:
-                        GPIO.output(LCD_DATA5, GPIO.HIGH)
-                    if bits & 0x40 == 0x40:
-                        GPIO.output(LCD_DATA6, GPIO.HIGH)
-                    if bits & 0x80 == 0x80:
-                        GPIO.output(LCD_DATA7, GPIO.HIGH)
-
-                    time.sleep(E_DELAY)
-                    GPIO.output(LCD_E, GPIO.HIGH)
-                    time.sleep(E_PULSE)
-                    GPIO.output(LCD_E, GPIO.LOW)
-                    time.sleep(E_DELAY)
-                    GPIO.output(LCD_DATA4, GPIO.LOW)
-                    GPIO.output(LCD_DATA5, GPIO.LOW)
-                    GPIO.output(LCD_DATA6, GPIO.LOW)
-                    GPIO.output(LCD_DATA7, GPIO.LOW)
-
-                    if bits & 0x01 == 0x01:
-                        GPIO.output(LCD_DATA4, GPIO.HIGH)
-                    if bits & 0x02 == 0x02:
-                        GPIO.output(LCD_DATA5, GPIO.HIGH)
-                    if bits & 0x04 == 0x04:
-                        GPIO.output(LCD_DATA6, GPIO.HIGH)
-                    if bits & 0x08 == 0x08:
-                        GPIO.output(LCD_DATA7, GPIO.HIGH)
-
-                    time.sleep(E_DELAY)
-                    GPIO.output(LCD_E, GPIO.HIGH)
-                    time.sleep(E_PULSE)
-                    GPIO.output(LCD_E, GPIO.LOW)
-                    time.sleep(E_DELAY)
+                        LCD_WIDTH = 16 		# Zeichen je Zeile
+                        LCD_LINE_1 = 0x80 	# Adresse der ersten Display Zeile
+                        LCD_LINE_2 = 0xC0 	# Adresse der zweiten Display Zeile
+                        LCD_CHR = GPIO.HIGH
+                        LCD_CMD = GPIO.LOW
+                        E_PULSE = 0.0005
+                        E_DELAY = 0.0005
 
 
-                    def display_init():
-                        lcd_send_byte(0x33, LCD_CMD)
-                        lcd_send_byte(0x32, LCD_CMD)
-                        lcd_send_byte(0x28, LCD_CMD)
-                        lcd_send_byte(0x0C, LCD_CMD)
-                        lcd_send_byte(0x06, LCD_CMD)
-                        lcd_send_byte(0x01, LCD_CMD)
+                        def lcd_send_byte(bits, mode):
+                        GPIO.output(LCD_RS, mode)
+                        GPIO.output(LCD_DATA4, GPIO.LOW)
+                        GPIO.output(LCD_DATA5, GPIO.LOW)
+                        GPIO.output(LCD_DATA6, GPIO.LOW)
+                        GPIO.output(LCD_DATA7, GPIO.LOW)
+
+                        if bits & 0x10 == 0x10:
+                            GPIO.output(LCD_DATA4, GPIO.HIGH)
+                        if bits & 0x20 == 0x20:
+                            GPIO.output(LCD_DATA5, GPIO.HIGH)
+                        if bits & 0x40 == 0x40:
+                            GPIO.output(LCD_DATA6, GPIO.HIGH)
+                        if bits & 0x80 == 0x80:
+                            GPIO.output(LCD_DATA7, GPIO.HIGH)
+
+                        time.sleep(E_DELAY)
+                        GPIO.output(LCD_E, GPIO.HIGH)
+                        time.sleep(E_PULSE)
+                        GPIO.output(LCD_E, GPIO.LOW)
+                        time.sleep(E_DELAY)
+                        GPIO.output(LCD_DATA4, GPIO.LOW)
+                        GPIO.output(LCD_DATA5, GPIO.LOW)
+                        GPIO.output(LCD_DATA6, GPIO.LOW)
+                        GPIO.output(LCD_DATA7, GPIO.LOW)
+
+                        if bits & 0x01 == 0x01:
+                            GPIO.output(LCD_DATA4, GPIO.HIGH)
+                        if bits & 0x02 == 0x02:
+                            GPIO.output(LCD_DATA5, GPIO.HIGH)
+                        if bits & 0x04 == 0x04:
+                            GPIO.output(LCD_DATA6, GPIO.HIGH)
+                        if bits & 0x08 == 0x08:
+                            GPIO.output(LCD_DATA7, GPIO.HIGH)
+
+                        time.sleep(E_DELAY)
+                        GPIO.output(LCD_E, GPIO.HIGH)
+                        time.sleep(E_PULSE)
+                        GPIO.output(LCD_E, GPIO.LOW)
+                        time.sleep(E_DELAY)
 
 
-                    def pins_init():
-                        GPIO.setmode(GPIO.BCM)
-                        GPIO.setwarnings(False)
-                        GPIO.setup(LCD_E, GPIO.OUT)
-                        GPIO.setup(LCD_RS, GPIO.OUT)
-                        GPIO.setup(LCD_DATA4, GPIO.OUT)
-                        GPIO.setup(LCD_DATA5, GPIO.OUT)
-                        GPIO.setup(LCD_DATA6, GPIO.OUT)
-                        GPIO.setup(LCD_DATA7, GPIO.OUT)
+                        def display_init():
+                            lcd_send_byte(0x33, LCD_CMD)
+                            lcd_send_byte(0x32, LCD_CMD)
+                            lcd_send_byte(0x28, LCD_CMD)
+                            lcd_send_byte(0x0C, LCD_CMD)
+                            lcd_send_byte(0x06, LCD_CMD)
+                            lcd_send_byte(0x01, LCD_CMD)
 
 
-                    def lcd_message(message):
-                        message = message.ljust(LCD_WIDTH, " ")
-                        for i in range(LCD_WIDTH):
-                            lcd_send_byte(ord(message[i]), LCD_CHR)
+                        def pins_init():
+                            GPIO.setmode(GPIO.BCM)
+                            GPIO.setwarnings(False)
+                            GPIO.setup(LCD_E, GPIO.OUT)
+                            GPIO.setup(LCD_RS, GPIO.OUT)
+                            GPIO.setup(LCD_DATA4, GPIO.OUT)
+                            GPIO.setup(LCD_DATA5, GPIO.OUT)
+                            GPIO.setup(LCD_DATA6, GPIO.OUT)
+                            GPIO.setup(LCD_DATA7, GPIO.OUT)
 
 
-                    def clear_line(line):
-                        lcd_send_byte(line, LCD_CMD)
+                        def lcd_message(message):
+                            message = message.ljust(LCD_WIDTH, " ")
+                            for i in range(LCD_WIDTH):
+                                lcd_send_byte(ord(message[i]), LCD_CHR)
 
 
-                    def clear_display():
-                        clear_line(LCD_LINE_1)
-                        lcd_message("")
-                        clear_line(LCD_LINE_2)
-                        lcd_message("")
-                </code>
+                        def clear_line(line):
+                            lcd_send_byte(line, LCD_CMD)
+
+
+                        def clear_display():
+                            clear_line(LCD_LINE_1)
+                            lcd_message("")
+                            clear_line(LCD_LINE_2)
+                            lcd_message("")
+                    </code>
+                </figure>
             </pre>
         </section>
     </section>
@@ -454,126 +458,128 @@
 
         </p>
         <pre class="col s12">
-            <code>
-                void setup() {
-                    initGlobals();
+            <figure>
+                <code>
+                    void setup() {
+                        initGlobals();
 
-                    pinMode(A5, INPUT);
-                    pinMode(A4, INPUT);
-                    pinMode(A0, INPUT);
-                    pinMode(A1, INPUT);
+                        pinMode(A5, INPUT);
+                        pinMode(A4, INPUT);
+                        pinMode(A0, INPUT);
+                        pinMode(A1, INPUT);
 
-                    Serial.begin(9600);
-                    matrix.begin(0x70);
-                    matrix.setRotation(2);
-                    strip.begin();
-                    strip.show();
+                        Serial.begin(9600);
+                        matrix.begin(0x70);
+                        matrix.setRotation(2);
+                        strip.begin();
+                        strip.show();
 
-                    drawImage(5);
-                }
-
-                void loop() {
-                    if(connected){
-                        checkForPlaylist();
-                        checkGesture();
-                        getDataFromPi();
-                        delay(50);
-                    }else{
-                        connected = isConnected();
-                        if(connected){
-                            initGlobals();
-                            colorWipe(strip.Color(255, 0, 0), 50);
-                            delay(100);
-                            colorWipe(strip.Color(0, 255, 0), 50);
-                        }
-                        delay(1000);
-                    }
-                }
-
-                void checkGesture(){
-                    int valLeft = analogRead(A5);
-                    int valRight = analogRead(A4);
-
-                    if(musicState == -1 && (valLeft > 370 || valRight > 370)){
                         drawImage(5);
-                        delay(500);
-                        drawImage(4);
-                        return;
                     }
 
-                    for(int i = 0; i < 2; i++){
-                        if(valLeft > 370 && valRight > 370){
-                            if(musicState == 0){
-                                musicState = 1;
-                                play();
+                    void loop() {
+                        if(connected){
+                            checkForPlaylist();
+                            checkGesture();
+                            getDataFromPi();
+                            delay(50);
+                        }else{
+                            connected = isConnected();
+                            if(connected){
+                                initGlobals();
+                                colorWipe(strip.Color(255, 0, 0), 50);
+                                delay(100);
+                                colorWipe(strip.Color(0, 255, 0), 50);
+                            }
+                            delay(1000);
+                        }
+                    }
+
+                    void checkGesture(){
+                        int valLeft = analogRead(A5);
+                        int valRight = analogRead(A4);
+
+                        if(musicState == -1 && (valLeft > 370 || valRight > 370)){
+                            drawImage(5);
+                            delay(500);
+                            drawImage(4);
+                            return;
+                        }
+
+                        for(int i = 0; i < 2; i++){
+                            if(valLeft > 370 && valRight > 370){
+                                if(musicState == 0){
+                                    musicState = 1;
+                                    play();
+                                    delay(1000);
+                                }else{
+                                    if(musicState == 1){
+                                        musicState = 0;
+                                        pause();
+                                        delay(1000);
+                                    }
+                                }
+
+                                return;
+                            }
+
+                            if(i != 1){
+                                delay(100);
+                            }
+                            valLeft = analogRead(A5);
+                            valRight = analogRead(A4);
+                        }
+
+
+                        if(valLeft > 370 && valRight <= 370){
+                            delay(300);
+                            int val = analogRead(A4);
+                            if(val > 370){
+                                next();
                                 delay(1000);
                             }else{
-                                if(musicState == 1){
-                                    musicState = 0;
-                                    pause();
-                                    delay(1000);
-                                }
+                                Serial.println("g5");
+                                drawVolumeDownAnimation();
+                                displayMusicState();
+                            }
+                            return;
+                        }
+
+                        if(valRight > 370 && valLeft <= 370){
+                            delay(300);
+                            int val = analogRead(A5);
+                            if(val > 370){
+                                previous();
+                                delay(1000);
+                            }else{
+                                Serial.println("g4");
+                                drawVolumeUpAnimation();
+                                displayMusicState();
                             }
 
                             return;
                         }
-
-                        if(i != 1){
-                            delay(100);
-                        }
-                        valLeft = analogRead(A5);
-                        valRight = analogRead(A4);
+                        delay(100);
                     }
 
-
-                    if(valLeft > 370 && valRight <= 370){
-                        delay(300);
-                        int val = analogRead(A4);
-                        if(val > 370){
-                            next();
-                            delay(1000);
-                        }else{
-                            Serial.println("g5");
-                            drawVolumeDownAnimation();
-                            displayMusicState();
-                        }
-                        return;
-                    }
-
-                    if(valRight > 370 && valLeft <= 370){
-                        delay(300);
-                        int val = analogRead(A5);
-                        if(val > 370){
-                            previous();
-                            delay(1000);
-                        }else{
-                            Serial.println("g4");
-                            drawVolumeUpAnimation();
-                            displayMusicState();
-                        }
-
-                        return;
-                    }
-                    delay(100);
-                }
-
-                bool isConnected(){
-                    String data = "";
-                    while(Serial.available()){
-                        delay(50);
-                        if (Serial.available() > 0) {
-                            char letter = Serial.read();
-                            data += letter;
+                    bool isConnected(){
+                        String data = "";
+                        while(Serial.available()){
+                            delay(50);
+                            if (Serial.available() > 0) {
+                                char letter = Serial.read();
+                                data += letter;
+                                }
                             }
-                        }
 
-                    if(data == "connected"){
-                        return true;
-                    }else{
-                        return false;
+                        if(data == "connected"){
+                            return true;
+                        }else{
+                            return false;
+                        }
                     }
-                }
-            </code>
+                </code>
+            </figure>
         </pre>
     </section>
     <a class="custom-link" href="../cd_shelf.zip" download>Projekt.zip</a>
@@ -590,8 +596,7 @@
 <script type="text/javascript" src="../js/libs/highlight/highlight.pack.js"></script>
 <script type="text/javascript">
     hljs.initHighlightingOnLoad();
-</script>
-<script>
+
     addSlider([
         {src: "../images/code/code_1.jpg", alt: "test"},
         {src: "../images/code/code_2.jpg", alt: ""},

@@ -98,6 +98,10 @@ a.custom-text-link:hover {
     text-align: center;
 }
 
+.sr-only {
+    display: none;
+}
+
 .section {
     min-height: 500px;
 }

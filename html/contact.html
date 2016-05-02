@@ -2,8 +2,8 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Kontakt-Bienenseite</title>
-    <meta viewport="width=device-width, initial-scale=1">
+    <title>SWH-WS15/16 - Kontakt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Matthias Bräuer">
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -17,39 +17,53 @@
     <h1>Kontakt</h1>
 </header>
 <main class="container">
-    <div class="row">
-        <form class="s12">
-            <div class="row">
-                <form class="col s12">
-                    <fieldset>
-                        <div class="row">
-                            <form class="col s12">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input id="recipient" type="email" class="disabled" disabled>
-                                        <label for="recipient">fake-kontakt@info.de</label>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <textarea id="message" class="materialize-textarea"></textarea>
-                                <label for="message">Nachricht</label>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
+    <section class="row">
+        <h2>Schreibe uns eine Email</h2>
+        <form class="col s12">
+            <fieldset class="">
+                <legend>Empfänger</legend>
+                <div class="input-field">
+                    <input id="recipient" type="email" value="fake-kontakt@info.de" readonly>
+                    <label class="sr-only" for="recipient">Email</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Persöhnliche Daten</legend>
+                <div class="input-field">
+                    <label>Absender</label>
+                    <input id="sender" class="validate" type="email" name="email" required>
+                </div>
+                <div class="input-field">
+                    <label for="name">Name</label>
+                    <input class="input-field" id="name" type="text" name="name">
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Nachricht</legend>
+                <div class="input-field">
+                    <textarea id="message" class="materialize-textarea"></textarea>
+                    <label class="sr-only" for="message">Nachricht</label>
+                </div>
+            </fieldset>
+            <input class="btn btn-large" type="submit">
         </form>
-    </div>
+    </section>
 </main>
 <footer></footer>
+<script type="text/javascript" src="../js/libs/underscore/underscore.js"></script>
 <script type="text/javascript" src="../js/libs/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="../js/libs/Materialize/dist/js/materialize.js"></script>
 <script type="text/javascript" src="../js/app/addSlider.js"></script>
 <script type="text/javascript" src="../js/app/addNavbar.js"></script>
 <script type="text/javascript" src="../js/app/addFooter.js"></script>
 <script type="text/javascript" src="../js/app/animation.js"></script>
+<script type="text/javascript">
+    addSlider([
+        {src: "../images/contact/typewriter_1.jpg", alt: "Schreibmaschine"},
+        {src: "../images/contact/telephone.jpg", alt: "Schreibmaschine"},
+        {src: "../images/contact/typewriter_2.jpg", alt: "Schreibmaschine"},
+        {src: "../images/contact/wood_question_mark.jpg", alt: "Bäume mit Fragezeichen"}
+    ]);
+</script>
 </body>
 </html>

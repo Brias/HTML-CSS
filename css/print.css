@@ -1,0 +1,65 @@
+@page {
+    size: A4 portrait;
+    margin-top: 1cm;
+    margin-bottom: 1cm;
+}
+
+@page :left {
+    margin-left: 2cm;
+}
+
+@page :right {
+    margin-left: 2cm;
+}
+
+@page :first {
+
+}
+
+code span {
+    display: block;
+    text-align: left!important;
+    float: left!important;
+}
+
+p {
+    text-align: justify;
+}
+
+h1, h2, h3, h4, h5 {
+    page-break-after: avoid;
+}
+
+ul, ol, a, span, div, h1, h2, h3, h4, h5 {
+    text-align: center;
+}
+
+table, figure {
+    page-break-inside: avoid;
+}
+
+footer {
+    border-top: solid 3px lightgray !important;
+    font-size: 0.8em;
+    line-height: 0.2cm;
+    margin-bottom: 0;
+}
+
+footer * {
+    text-align: left;
+}
+
+.no-print, .parallax-container, .custom-link {
+    display: none;
+}
+
+.active {
+    background-color: lightgray;
+    color: black;
+    -webkit-print-color-adjust: exact;
+}
+
+.footer-copyright div p{
+    color: lightgray !important;
+    -webkit-print-color-adjust: exact;
+}

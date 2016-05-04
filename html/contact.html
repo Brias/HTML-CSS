@@ -9,17 +9,18 @@
     <meta name="keywords" content="">
     <link rel="stylesheet" href="../js/libs/Materialize/dist/css/materialize.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/print.css" media="print">
 </head>
 <body>
-<div class="slider"></div>
-<nav id="navbar"></nav>
+<div class="slider no-print"></div>
+<nav id="navbar" class="no-print"></nav>
 <header class="container row">
     <h1>Kontakt</h1>
 </header>
 <main class="container">
     <section class="row">
         <h2>Schreibe uns eine Email</h2>
-        <form class="col s12">
+        <form class="col s12" action=MAILTO:fake-kontakt@info.de" method="post" enctype="text/plain">
             <fieldset class="">
                 <legend>Empfänger</legend>
                 <div class="input-field">
@@ -44,8 +45,8 @@
                     <textarea id="message" class="materialize-textarea"></textarea>
                     <label class="sr-only" for="message">Nachricht</label>
                 </div>
+                <input class="btn btn-large" type="submit">
             </fieldset>
-            <input class="btn btn-large" type="submit">
         </form>
     </section>
 </main>

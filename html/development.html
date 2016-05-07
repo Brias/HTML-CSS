@@ -5,8 +5,10 @@
     <title>SWH-WS15/16 - Entwicklung</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Matthias Bräuer">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description"
+          content="Diese Seite zeigt die einzelnen Entwicklungsschrite eines CD-Regals als Tangible User Interface (TUI) aus dem Kurs SWH-WS15/16">
+    <meta name="keywords"
+          content="SWH-WS15/16, TUI, Tangible User interface, Entwicklung, CD-Regal, Hardware, Universität Regensburg, Medieninformatik">
     <link rel="stylesheet" href="../js/libs/Materialize/dist/css/materialize.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/print.css" media="print">
@@ -14,100 +16,267 @@
 <body>
 <div class="slider no-print"></div>
 <nav id="navbar" class="no-print"></nav>
-<header class="container row">
-    <h1>Entwicklung</h1>
+<header class="container">
+    <section class="row">
+        <h1>Entwicklung</h1>
+        <p class="col s12">
+            Im Folgenden wird die Entwicklung des CD-Regals in 18 Schritten genauer erläutert.
+            Am Ende der Seite ist ein <a href="#instructionVideo" class="custom-text-link">Bedienungsvideo</a>
+            verfügbar, um die Funktionsweise
+            des Regals anschaulicher zu machen.
+        </p>
+    </section>
 </header>
 <main class="container">
-    <div class="row">
-        <figure class="col s5">
-            <img class="materialboxed responsive-img" src="../images/shelf_breadboard_circuit_2.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_lego.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_wood_prototype.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_18.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/wooden_cover_shelf_front.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/wooden_cover_shelf_back.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/breadboard_arduino.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/housing_empty.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_nearly_finished.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/raspberry_pi.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_3.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_2.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_4.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_17.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_15.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_12.jpg">
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_7.jpg">
-            <figcaption></figcaption>
-        </figure>
-        <figure>
-            <img class="materialboxed responsive-img" src="../images/shelf_1.jpg">
-            <figcaption></figcaption>
-        </figure>
-    </div>
     <section class="row">
-        <h4>Bedienungsvideo des CD-Regals</h4>
-        <figure class="col s12">
-            <video controls>
-                <source src="../videos/tui_shelf.mp4">
-                Dein Browser unterstützt kein HTML5 Video.
-                Schau dir das Video unter
-                <a href="https://www.youtube.com/watch?v=Uuga4m74Kos&feature=youtu.be">https://www.youtube.com/watch?v=Uuga4m74Kos&feature=youtu.be</a>
-                an
-            </video>
-        </figure>
+        <h2>Einleitung</h2>
+        <p class="col s12">
+            Der Prototyp besteht aus 3 visuellen Feedback-Komponenten, einer direkten und einer indirekten
+            Aktionskomponente.
+            Das LCD Display, das direkt an einen Raspberry Pi angeschlossen ist, gibt abwechselnd sowohl Auskunft über
+            den aktuellen Liedtitel, als auch über die bisherige Laufzeit.
+        </p>
+        <p class="col s12">
+            Die LED Matrix informiert den Nutzer über die vom Nutzer ausgelöste Aktion („Lauter/Leiser“,
+            „Weiter/Zurück“, „Play/Pause/Stop“) bzw. den aktuellen Status der gespielten CD („Play/Pause/Stop“), falls
+            keine Aktion vom Nutzer ausgelöst wurde. Sie zeigt auch an, ob eine Aktion möglich ist oder nicht. Ist das
+            Skript auf dem Raspberry Pi noch nicht gestartet, wird durchgehend ein „X“ angezeigt und keine Aktionen
+            verarbeitet. Solange der aktuelle Status „Stop“ ist, wird das bekannte Stop-Icon und bei einer ausgeführten
+            Geste wiederum ein „X“ angezeigt, da Aktionen über Gesten nur möglich sind, wenn der Status „Play“ oder
+            „Pause“ ist. Alle Aktionen werden über Bitmaps dargestellt/animiert, die direkt im auf dem Arduino laufenden
+            Skript als Array definiert sind.
+        </p>
+        <p class="col s12">
+            Die direkte Aktionskomponente besteht aus 2 Abstandssensoren, die je nach gemessenem Abstandswert die
+            Spannung an dem jeweiligen Arduino Pins so verändern, dass dieser über einen ADC, Werte zwischen 0 und 1023
+            errechnet. Je höher der Wert dabei, desto näher ist ein Objekt. Diese Messwerte werden stetig ausgelesen und
+            mit bestimmten Schwellwerten verglichen. Je nach Kombination der Sensorwerte wird eine bestimmte Aktion
+            erkannt und auf die Serielle Schnittstelle geschrieben, die vom Raspberry Pi stetig ausgelesen wird und die
+            Daten daraus interpretiert und ausführt.
+        </p>
+        <p class="col s12">
+            Die indirekte Aktionskomponente befindet sich an der Rückwand des Musikregals und besteht aus 2
+            Kupferstreifenpaare, die jeweils einen Streifen als Stromzufuhr (5V) und einen als Zuleitung zum Arduino Pin
+            bzw. über einen 10k Ohm Widerstand zu Ground nutzen. Befinden sich alle CDs im Regal sind beide
+            Kupferstreifenpaare mit durch 3 Widerstände (10k/22k/47k Ohm) verbunden und somit der Stromkreis
+            geschlossen. Je nachdem welche CD nun aus dem Regal genommen wird ändert sich die Spannung am jeweiligen
+            Arduino Pin und das Laufende Programm entscheidet welche CD genau dem Regal entnommen wurde und sendet eine
+            Bezeichnung für diese CD an den Raspberry Pi, der die Songs der jeweiligen CD von der SD Karte lädt und
+            abspielt. Das Entnehmen mehrere CDs aus dem Regal führt zu keiner Reaktion des Arduinos bzw. die erste, die
+            entnommen wird, wird abgespielt.
+        </p>
+    </section>
+    <section class="row">
+        <h2>Bildergeschichte</h2>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_breadboard_circuit_2.jpg"
+                     alt="Schaltung auf Breadboard">
+                <figcaption>Rohschaltung</figcaption>
+            </figure>
+            <h3>Schritt 1</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt die fertige Schaltung des CD-Regals im unverbaten Zustand.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_lego.jpg" alt="Lego-Cd-Slots">
+                <figcaption>Lego-Kupfer-Leiterbahnen-Tester</figcaption>
+            </figure>
+            <h3>Schritt 2</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt ein Legobauwerk, das als Modell und Prototyp für das endgültige Regal dient.
+                Es verfügt über 6 CD-Slots und 2 Kupferbahnenpaare an der Verderseite der Rückwand und wird benutzt
+                um zu testen, ob alle CDs das jeweilige Kupferbahnpaar schließt.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_wood_prototype.jpg"
+                     alt="CD-Slots aus Holz">
+                <figcaption>CD-Regal Grundgehäuse</figcaption>
+            </figure>
+            <h3>Schritt 3</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt das fertige Grundgehäuse des CD-Regals. Zu sehen sind 6 aus Holz gefertigte
+                CD-Slots.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_18.jpg"
+                     alt="Offenes CD-Regal mit Kupferbahnenpaare">
+                <figcaption>Grundgehäuse mit Kupferbahnenpaare</figcaption>
+            </figure>
+            <h3>Schritt 4</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt das aus Holz gefertigte Grundgehäuse samt beider, oben und unten an der Rückwand
+                angebrachten
+                Kupferbahnenpaare, an denen jeweils ein Krokodilkabel angeklemmt ist um eine Verbindung zum Arduino
+                herzustellen.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/wooden_cover_shelf_front.jpg"
+                     alt="Frontseite des CD-Regal_Deckels">
+                <figcaption>Deckel (Frontseite) des CD-Regals mit eingebauter 8x8 LED-Matrix und beiden Abstandssensoren
+                </figcaption>
+            </figure>
+            <h3>Schritt 5</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt den Deckel des CD-Regals, in dem eine 8x8 LED-Matrix sowie 2 Abstandssensoren zur
+                Gestensteuerung
+                des abgespielten Liedes verbaut sind.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/wooden_cover_shelf_back.jpg"
+                     alt="Rückseite des CD-Regal-Deckels">
+                <figcaption>Deckel (Rückseite) des CD-Regals mit eingebauter 8x8 LED-Matrix und beiden Abstandssensoren
+                </figcaption>
+            </figure>
+            <h3>Schritt 6</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt die Rückseite des Deckels des CD-Regals, in dem eine 8x8 LED-Matrix sowie 2
+                Abstandssensoren zur Gestensteuerung
+                des abgespielten Liedesverbaut sind.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/breadboard_arduino.jpg"
+                     alt="Breadboard mit Arduino und Komponenten">
+                <figcaption>Breadboard mit Arduino und CD-Regal-Komponenten</figcaption>
+            </figure>
+            <h3>Schritt 7</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt ein kleines Breadboard, auf das ein Arduino Micro und bis auf das 16x2 LCD-Display
+                alle restlichen elektronischen Komponenten des CD-Regals gesteckt sind.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/housing_empty.jpg"
+                     alt="Unfertiges CD-Regal von vorne">
+                <figcaption>Fast fertiges CD-Regal von vorne</figcaption>
+            </figure>
+            <h3>Schritt 8</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt das fast fertige CD-Regal von vorne.
+                Die Kupferbahnen werden schon angezapft und das Abspielen einer CD
+                ist über das Herausziehen dieser aus dem Regal möglich.
+                Das Breadboard samt Kabel und der Raspberry Pi + 16x2 LCD-Display
+                müssen noch verstaut werden.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/raspberry_pi.jpg"
+                     alt="Raspberry Pi + 16x2 LCD-Display">
+                <figcaption>Raspberry Pi + 16x2 LCD-Display</figcaption>
+            </figure>
+            <h3>Schritt 9</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt den Raspberry Pi und das in der Vorderseite des Regals verbaute 16x2 LCD-Display.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_2.jpg"
+                     alt="CD-Regal von oben mit aufgeschraubtem Deckel">
+                <figcaption>Vollgepackter Innenraum</figcaption>
+            </figure>
+            <h3>Schritt 10</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt wie der Innenraum des Regals nach Verstauen der Kabel und Microcontroller
+                aussieht.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_17.jpg"
+                     alt="Fertiges CD-Regal von vorne">
+                <figcaption>Fertiges Regal von vorne</figcaption>
+            </figure>
+            <h3>Schritt 11</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt das fertige CD-Regal von vorne.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_15.jpg"
+                     alt="Fertiges CD-Regal schräg von oben">
+                <figcaption>Fertiges Regal schräg von oben</figcaption>
+            </figure>
+            <h3>Schritt 12</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt das fertige Regal schräg von oben. Gut zu sehen ist die leuchtende
+                8x8 LED-Matrix, die gerade das Symbol für "noch nicht bereit" anzeigt.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_12.jpg"
+                     alt="Fertiges CD-Regal schräg von hinten">
+                <figcaption>Fertiges CD-Regals schräg von hinten</figcaption>
+            </figure>
+            <h3>Schritt 13</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt das fertige Regal schräg von oben. Augenmerk dabei liegt hier auf
+                dem Kabelverbund, der aus der Rückwand des Regals tritt. Somit müssen nur die Kabel
+                richtig angeschlossen werden damit alle Funktionen zur Verfügung stehen. Das Regal
+                muss dabei nicht geöffnet werden.
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_7.jpg"
+                     alt="Fertiges CD-Regal im angeschalteten Zustand">
+                <figcaption>CD-Regal im "bereit" Zustand von vorne</figcaption>
+            </figure>
+            <h3>Schritt 14</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt ds Regal wie es eingeschaltet und voll Funktionsfähig ist.
+                Erkennbar ist dies zum Einen am leuchtenden LED-Streifen und zum Anderen an der
+                Nachricht, die das 16x2 LCD-Display anzeigt: "Ich bin bereit! Leg los!"
+            </p>
+        </section>
+        <section class="row pull-header-on-top-on-medium-and-small pull-header-on-top-on-print">
+            <figure class="col l6 s12">
+                <img class="materialboxed responsive-img" src="../images/shelf_1.jpg"
+                     alt="Fertiges CD-Regal in angeschalteten Zustand">
+                <figcaption>CD-Regal im "bereit" Zustand schräg von vorne</figcaption>
+            </figure>
+            <h3>Schritt 15</h3>
+            <p class="col l5 s12">
+                Die Abbildung zeigt ds Regal wie es eingeschaltet und voll Funktionsfähig ist.
+                Zusätzlich zum LED-Streifen und LCD-Display zeigt hier auch die 8x8 LED-Matrix an,
+                dass das Regal bereit ist. Erkennbar ist dies am "Stop"-Icon, das die Matrix anzeigt.
+            </p>
+        </section>
+        <section class="row">
+            <h3>Bedienungsvideo des CD-Regals</h3>
+            <figure class="col s12">
+                <video id="instructionVideo" class="responsive-video" controls>
+                    <source src="../videos/tui_shelf.mp4">
+                    Dein Browser unterstützt kein HTML5 Video.
+                    Schau dir das Video unter
+                    <a href="https://www.youtube.com/watch?v=Uuga4m74Kos&feature=youtu.be">https://www.youtube.com/watch?v=Uuga4m74Kos&feature=youtu.be</a>
+                    an
+                </video>
+            </figure>
+        </section>
     </section>
 </main>
 <footer></footer>
 
 <script type="text/javascript" src="../js/libs/underscore/underscore.js"></script>
 <script type="text/javascript" src="../js/libs/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="../js/libs/jQuery.print/jQuery.print.js"></script>
 <script type="text/javascript" src="../js/libs/Materialize/dist/js/materialize.js"></script>
 <script type="text/javascript" src="../js/app/addSlider.js"></script>
 <script type="text/javascript" src="../js/app/addNavbar.js"></script>
@@ -115,9 +284,9 @@
 <script type="text/javascript" src="../js/app/animation.js"></script>
 <script type="text/javascript">
     addSlider([
-        {src: "../images/shelf_6.jpg", alt: "test"},
-        {src: "../images/shelf_10.jpg", alt: ""},
-        {src: "../images/shelf_7.jpg", alt: ""}
+        {src: "../images/shelf_6.jpg", alt: "CD-Regal angeschaltet"},
+        {src: "../images/shelf_10.jpg", alt: "CD-Regal angeschaltet"},
+        {src: "../images/shelf_7.jpg", alt: "CD-Regal angeschaltet"}
     ]);
 </script>
 </body>

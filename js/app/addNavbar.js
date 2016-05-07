@@ -33,8 +33,8 @@ function toggleNavbar() {
 }
 
 function onResize() {
-  if($(window).width() > 625) {
-    $('.responsive-nav-list').css("display", "block");
+  if($(window).width() > 665) {
+    $('.responsive-nav-list').css("display", "inline-block");
   } else {
     $('.responsive-nav-list').css("display", "none");
   }
@@ -42,6 +42,7 @@ function onResize() {
 
 function onNavbarLoaded() {
   checkForActive();
+  onResize();
   $(window).resize(onResize);
   $('.responsive-nav-toggle').click(toggleNavbar);
 }

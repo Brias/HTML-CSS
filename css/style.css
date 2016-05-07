@@ -1,3 +1,14 @@
+@keyframes animation {
+    0% {
+        transform: rotateX(0deg);
+        transform-origin: 50% 50% 0;
+    }
+    100% {
+        transform: rotateX(360deg);
+        transform-origin: 50% 50% 0;
+    }
+}
+
 @-webkit-keyframes animation {
     0% {
         -webkit-transform: rotateX(0deg);
@@ -48,6 +59,12 @@ html, body {
     font-size: 1.1em;
 }
 
+p {
+    text-align: justify;
+    word-break: normal;
+    word-wrap: break-word;
+}
+
 footer {
     margin-bottom: 0;
 }
@@ -62,8 +79,12 @@ em {
     font-size: 1.2em;
 }
 
-#navbar, #navbar ul, footer {
+#navbar, #navbar ul, footer, .btn, .waves-effect.waves-brown .waves-ripple {
     background-color: #785115;
+}
+
+.btn:hover {
+    background-color: #996d15;
 }
 
 #navbar .responsive-nav-toggle {
@@ -77,6 +98,14 @@ ul.li-enum-no-nums, ol.li-enum-no-nums {
 
 ul.li-enum-no-nums li, ol.li-enum-no-nums li {
     list-style: square;
+}
+
+#imprintModal strong {
+    margin-bottom: 10px;
+}
+
+#imprintModal address {
+    margin-bottom: 20px;
 }
 
 #navbar ul {
@@ -158,11 +187,21 @@ a.custom-text-link:hover {
     min-height: 500px;
 }
 
+.pull-header-on-top-on-medium-and-small, .pull-header-on-top-on-small, .pull-header-on-top-on-medium {
+    position: relative;
+}
+
 img.materialboxed:hover {
     cursor: zoom-in;
 }
 
-@media screen and (max-width: 625px) {
+@media screen and (max-width: 682px) {
+    h1, h2, h3, h4, h5 {
+        word-break: normal;
+        word-wrap: break-word;
+        text-align: center;
+    }
+
     #navbar {
         height: auto;
         text-align: right;
@@ -177,13 +216,82 @@ img.materialboxed:hover {
     }
 
     #navbar .responsive-nav-toggle {
-        display: block;
+        display: inline-block;
         margin-right: 10px;
+        padding: 10px;
+        vertical-align: middle;
+    }
+
+    .responsive-nav-toggle > span {
+        border-left: 40px solid white;
+        border-top: 5px solid white;
+        border-bottom: none;
+        border-right: none;
+        display: block;
+    }
+
+    .responsive-nav-toggle span:first-child {
+        margin-bottom: 20%;
+    }
+
+    .responsive-nav-toggle span:last-child {
+        margin-top: 20%;
     }
 
     #navbar .responsive-nav-toggle:hover {
         cursor: pointer;
 
-        -webkit-animation: animation 2s;
+        animation: animation 1s;
+        -webkit-animation: animation 1s;
+        -moz-animation: animation 1s;
+        -ms-animation: animation 1s;
+        -o-animation: animation 1s;
+    }
+
+    .pull-header-on-top-on-small {
+        background-color: blue;
+        padding-top: 100px;
+    }
+
+    .pull-header-on-top-on-small h2 {
+        position: absolute;
+        top: 0;
+        font-size: 3em;
+        left: 20px;
+    }
+}
+
+@media screen and (min-width: 682px) and (max-width: 993px) {
+    .pull-header-on-top-on-medium {
+        background-color: #33ff10;
+        padding-top: 100px;
+    }
+
+    .pull-header-on-top-on-medium h2 {
+        position: absolute;
+        top: 0;
+        font-size: 3em;
+        left: 20px;
+    }
+}
+
+@media screen and (max-width: 993px) {
+    footer * {
+        text-align: left;
+    }
+
+    footer .row:first-child > section:first-child {
+        margin-bottom: 35px;
+    }
+
+    .pull-header-on-top-on-medium-and-small {
+        padding-top: 100px;
+    }
+
+    .pull-header-on-top-on-medium-and-small h3 {
+        position: absolute;
+        top: 0;
+        font-size: 3em;
+        left: 20px;
     }
 }
